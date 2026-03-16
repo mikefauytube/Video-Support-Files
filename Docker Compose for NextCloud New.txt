@@ -1,0 +1,47 @@
+services:
+  db:
+    image: mariadb:10.11
+    container_name: nextcloud_db
+    restart: unless-stopped
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    volumes:
+      - /volume1/docker/nextcloud/db:/var/lib/mysql # Adjust this path to your NAS volume
+    environment:
+      MYSQL_ROOT_PASSWORD: YOURPASSWORD # Change this to a strong password
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
+      MYSQL_PASSWORD: YOURPASSWORD # Change this to a strong password
+
+
+  app:
+    image: nextcloud:latest
+    container_name: nextcloud_app
+    restart: unless-stopped
+    volumes:
+      - /volume1/docker/nextcloud/data:/var/www/html/data # Adjust this path to your NAS volume
+      - /volume1/docker/nextcloud/config:/var/www/html/config # Adjust this path to your NAS volume
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      PUID: 1000 # Your User ID
+      PGID: 100 # Your Group ID
+      NEXTCLOUD_TRUSTED_DOMAINS: 192.168.X.XX # e.g., 192.168.1.100 or your.domain.com
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
+      MYSQL_PASSWORD: YOURPASSWORD # Use the same password as above
+      MYSQL_HOST: db # This matches the service name of the database container
+      TZ: America/Los_Angeles # Adjust to your timezone
+    ports:
+      - 8090:80 # Corrected: Needs host_port:container_port
+    depends_on:
+      - db
+
+
+  # Optional: Redis for Nextcloud performance
+  redis:
+    image: redis:latest
+    container_name: nextcloud_redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass YOURPASSWORD # Corrected: Entire command string quoted
+    volumes:
+      - /volume1/docker/nextcloud/redis:/data # Adjust this path to your NAS volume
