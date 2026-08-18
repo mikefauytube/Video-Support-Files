@@ -1,0 +1,22 @@
+services:
+  emby:
+    image: emby/embyserver:latest
+    container_name: emby
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+
+    volumes:
+      - /path/to/your/emby/config:/config
+      - /path/to/your/media/movies:/data/movies
+      - /path/to/your/media/tvshows:/data/tvshows
+      # Add more media folders as needed
+
+    ports:
+      #- 8096:8096 # Emby web interface
+      #- 8920:8920 # Emby HTTPS (optional)
+
+    restart: unless-stopped
+
+    network_mode: host
