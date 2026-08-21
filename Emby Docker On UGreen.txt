@@ -14,8 +14,8 @@ services:
       # Add more media folders as needed
 
     ports:
-      #- 8096:8096 # Emby web interface
-      #- 8920:8920 # Emby HTTPS (optional)
+      - 8096:8096 # Emby web interface
+      - 8920:8920 # Emby HTTPS (optional)
 
     restart: unless-stopped
 
