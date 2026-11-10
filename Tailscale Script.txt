@@ -15,8 +15,8 @@ services:
 
       - TS_AUTH_KEY=
       - TS_STATE_DIR=/var/lib/tailscale
-      - TS_ROUTES=192.168.0.0/24,192.168.100.0/24
-      - TS_HOSTNAME=DXP4800Plus
+      - TS_ROUTES=192.168.0.0/24
+      - TS_HOSTNAME=NAME YOUR HOST
       - TS_EXTRA_ARGS=--advertise-exit-node
 
     network_mode: host
