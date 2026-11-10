@@ -1,0 +1,13 @@
+services:
+  uptime-kuma:
+    container_name: uptime-kuma
+    image: louislam/uptime-kuma:2
+    restart: unless-stopped
+    ports:
+      - "3002:3001"
+    environment:
+      TZ: "America/Los_Angeles"
+    volumes:
+      - /volume1/docker/uptime-kuma/data:/app/data
+      # Optional: lets Kuma monitor the status of your Docker containers
+      # - /var/run/docker.sock:/var/run/docker.sock:ro
